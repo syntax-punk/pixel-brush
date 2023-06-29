@@ -1,4 +1,19 @@
-# Svelte + TS + Vite
+# pixel-brush
+
+A simple drawing application for creating pixel art.
+
+The pixel-brush app allows users to paint on a grid canvas, creating pixelated images. It provides basic drawing tools and color selection options to help users unleash their creativity.
+
+To use the pixel-brush app, simply open it in your web browser and start drawing on the canvas using the available tools.
+
+For more information, please visit the [pixel-brush repository](https://github.com/syntax-punk/pixel-brush).
+
+#
+#
+#
+
+
+## Svelte + TS + Vite
 
 This template should help get you started developing with Svelte and TypeScript in Vite.
 
