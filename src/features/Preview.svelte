@@ -1,14 +1,15 @@
 <script lang="ts">
   import { navigate } from "svelte-routing";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { getData } from "../lib/firestore";
 
   let container;
   let canvas;
   let ctx;
-  let gridData;
+  let selectedBox;
   let pixelSize = 2;
   let DIMENSION = 25;
+  let pixelPosition = [0, 0];
 
   function fillPixel(coords, subCoords, color) {
     const [x, y] = coords;
@@ -30,14 +31,9 @@
       for (let subKey in pixelData) {
         const subCoords = subKey.split(',');
         const color = pixelData[subKey];
-        fillPixel(coords, subCoords, color);
-        
-        // const pixel = [parseInt(x) * 25 + parseInt(subX), parseInt(y) * 25 + parseInt(subY)];
-        // fillPixel(pixel, color);
+        fillPixel(coords, subCoords, color);        
       }
-      // gridData[parseInt(x)][parseInt(y)] = data[key];
     }
-    console.log(gridData);
   });
 
 
@@ -46,11 +42,8 @@
     canvas = document.getElementById("preview-canvas") as HTMLCanvasElement;
     ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-    let pixelPosition = [0, 0];
-
     const repeatSx = 20;
     const repeatSy = 15;
-    let selectedBox;
 
     let width = DIMENSION * repeatSx * pixelSize;
     let height = DIMENSION * repeatSy * pixelSize;
@@ -75,41 +68,46 @@
       ctx.stroke();
     }
 
-    container.addEventListener('click', (e) => {
-      selectBox(e)
-    });
-
-    canvas.addEventListener('mousemove', (e) => {
-      let pixel = [Math.floor(e.offsetX / (pixelSize * DIMENSION)), Math.floor(e.offsetY / (pixelSize * DIMENSION))];
-      pixelPosition = pixel;
-
-      if (!selectedBox) { 
-        selectedBox = document.createElement('div');
-        selectedBox.id = 'selected-box';
-        selectedBox.style.position = 'absolute';
-        selectedBox.style.border = '1px solid red';
-        selectedBox.style.width = `${DIMENSION * pixelSize - 2}px`;
-        selectedBox.style.height = `${DIMENSION * pixelSize - 2}px`;
-        selectedBox.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-        selectedBox.style.top = 0;
-        selectedBox.style.left = 0;
-        container.appendChild(selectedBox);
-      }
-
-      selectedBox.style.left = `${pixel[0] * DIMENSION * pixelSize + 1}px`;
-      selectedBox.style.top = `${pixel[1] * DIMENSION * pixelSize}px`;
-    });
-
-    function selectBox(e) {
-      console.log(pixelPosition);
-
-      navigate(`/draw/${pixelPosition[0]}/${pixelPosition[1]}`);
-    }
-
-    return () => {
-      container.removeEventListener('click', selectBox);
-    }
+    container.addEventListener('click', clickHandler);
+    canvas.addEventListener('mousemove', mouseMoveHandler);
   });
+
+  onDestroy(() => {
+    container.removeEventListener('click', clickHandler);
+    canvas.removeEventListener('mousemove', mouseMoveHandler);
+  });
+
+  function mouseMoveHandler(e) {
+    let pixel = [Math.floor(e.offsetX / (pixelSize * DIMENSION)), Math.floor(e.offsetY / (pixelSize * DIMENSION))];
+    pixelPosition = pixel;
+
+    if (!selectedBox) { 
+      createCursorBox();
+    }
+
+    selectedBox.style.left = `${pixel[0] * DIMENSION * pixelSize + 1}px`;
+    selectedBox.style.top = `${pixel[1] * DIMENSION * pixelSize}px`;
+  }
+
+  function clickHandler(e) {
+    selectBox(e);
+  }
+
+  function createCursorBox() {
+    selectedBox = document.createElement('div');
+    selectedBox.id = 'selected-box';
+    selectedBox.style.position = 'absolute';
+    selectedBox.style.width = `${DIMENSION * pixelSize}px`;
+    selectedBox.style.height = `${DIMENSION * pixelSize}px`;
+    selectedBox.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+    selectedBox.style.top = 0;
+    selectedBox.style.left = 0;
+    container.appendChild(selectedBox);
+  }
+
+  function selectBox(e) {
+      navigate(`/draw/${pixelPosition[0]}/${pixelPosition[1]}`);
+  }
 
 </script>
 
@@ -121,10 +119,10 @@
 <style>
   .container {
     position: relative;
-    border: 1px solid green;
+    margin: auto;
   }
-
   canvas {
-    border: 2px dashed azure;
+    border-radius: 4px;
+    box-shadow: 0 0 16px 12px rgba(255, 255, 255, 0.1), 0 0 8px rgb(14, 245, 245, 0.4);
   }
 </style>

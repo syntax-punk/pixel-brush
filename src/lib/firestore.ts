@@ -33,7 +33,6 @@ async function addData(data) {
   const [,, gridDoc] = getFirestuff();
   try {
     await updateDoc(gridDoc, data);
-    console.log("-> document data is stored");
   } catch (e) {
     console.error("-> error adding document: ", e);
   }
@@ -46,7 +45,6 @@ async function getData() {
     const data = docSnap.data();
     return data;
   } else {
-    // doc.data() will be undefined in this case
     console.log("-> No such document!");
   }
 };
