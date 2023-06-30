@@ -10,12 +10,12 @@ let gridDoc;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCkVlNGoV6z7XKVeKJD6KgFZr6UKLBr1H4",
-  authDomain: "tiny-huge-canvas.firebaseapp.com",
-  projectId: "tiny-huge-canvas",
-  storageBucket: "tiny-huge-canvas.appspot.com",
-  messagingSenderId: "339887616061",
-  appId: "1:339887616061:web:da00e97e8bd317880dfa54"
+  apiKey: import.meta.env.VITE_APIKEY,
+  authDomain: import.meta.env.VITE_AUTHDOMAIN,
+  projectId: import.meta.env.VITE_PROJECTID,
+  storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+  appId: import.meta.env.VITE_APPID
 };
 
 // Initialize Firebase
