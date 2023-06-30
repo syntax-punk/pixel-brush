@@ -123,6 +123,6 @@
   }
   canvas {
     border-radius: 4px;
-    box-shadow: 0 0 16px 12px rgba(255, 255, 255, 0.1), 0 0 8px rgb(14, 245, 245, 0.4);
+    box-shadow: 0 0 16px 12px rgba(255, 255, 255, 0.1), 0 0 8px rgba(14, 245, 245, 0.4);
   }
 </style>
