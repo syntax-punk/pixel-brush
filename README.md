@@ -1,6 +1,6 @@
-# pixel-brush
+# pixel-brush 
 
-A simple drawing application for creating pixel art.
+A simple drawing application for creating pixel art. Try it here -> [Demo](https://pixelbrush.syntaxpunk.com/)
 
 The pixel-brush app allows users to paint on a grid canvas, creating pixelated images. It provides basic drawing tools and color selection options to help users unleash their creativity.
 
